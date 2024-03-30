@@ -1,6 +1,7 @@
 const Discord = require('../../entities/discord');
 const Response = require('../../commons/response');
 const env = require('../../commons/envStorage');
+const Logger = require('../../commons/Logger');
 
 const discord = Discord.getInstance();
 
@@ -11,9 +12,14 @@ module.exports = {
 
             const isStart = await discord.start(isRestart);
             const isLogin = discord.login(env.discord.token);
-            return isStart && isLogin ? Response.createSuccessResponse(res, 'Bot started successfully')
+
+            const isReady = isStart && isLogin;
+
+            Logger.info(`Bot started: ${isReady}`);
+            return isReady ? Response.createSuccessResponse(res, 'Bot started successfully')
                 : Response.createErrorResponse(res, 'Failed to start bot');
         } catch (error) {
+            Logger.error(error);
             return Response.createErrorResponse(res, error.message);
         }
     },
@@ -22,6 +28,7 @@ module.exports = {
             discord.stop();
             return Response.createSuccessResponse(res, 'Bot stopped successfully');
         } catch (error) {
+            Logger.error(error);
             return Response.createErrorResponse(res, error.message);
         }
     },
@@ -31,6 +38,7 @@ module.exports = {
             const response = await discord.setActivities(activities);
             return Response.createSuccessResponse(res, 'Activities updated successfully');
         } catch (error) {
+            Logger.error(error);
             return Response.createErrorResponse(res, error.message);
         }
     }

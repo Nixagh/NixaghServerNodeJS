@@ -1,5 +1,4 @@
 const DiscordBot = require('discord.js-selfbot-v13');
-const logger = require('morgan');
 
 class Discord {
     static #instance = null;
@@ -30,8 +29,7 @@ class Discord {
             return await this.#discordSchema.updateOne({key: 'activity'}, {value: JSON.stringify(activities)}, {upsert: true});
         }
         catch (err) {
-            logger(err);
-            return false;
+            throw err;
         }
     }
 
@@ -40,16 +38,12 @@ class Discord {
             await this.#client.login(token);
             return true;
         } catch (err) {
-            logger(err);
-            return false;
+            throw err;
         }
     }
 
     async start(isRestart = false) {
         if (!this.#isRunning || isRestart) {
-            if (isRestart) logger('Restarting Discord bot');
-            else logger('Starting Discord bot');
-
             // get activity from database
             const activity = await this.getActivities();
             const activities = JSON.parse(activity.value);
@@ -62,20 +56,15 @@ class Discord {
             });
         }
 
-        logger('Discord bot is running');
-        console.log('Discord bot is running')
-
         return this.#isRunning;
     }
 
     stop() {
-        logger('Stopping Discord bot');
         this.#isRunning = false;
         this.#client.destroy();
     }
 
     createNewActivity(activities) {
-        console.log(activities);
         const activity = new DiscordBot.RichPresence()
             .setType(activities.type)
             .setURL(activities.url)
