@@ -11,3 +11,5 @@ app.get('/', (req, res) => {
 app.listen(env.server.port, () => {
     console.log(`Example app listening on port ${env.server.port}`)
 });
+
+module.exports = app;
