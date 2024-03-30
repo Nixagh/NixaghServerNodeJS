@@ -11,7 +11,7 @@ module.exports = {
             const isRestart = req.query.restart;
 
             const isStart = await discord.start(isRestart);
-            const isLogin = discord.login(env.discord.token);
+            const isLogin = await discord.login(env.discord.token);
 
             const isReady = isStart && isLogin;
 
