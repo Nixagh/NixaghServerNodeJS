@@ -10,6 +10,7 @@ router.get('/daily', processService.daily);
 
 // discord
 router.get('/discord/start', discordService.startBot);
+router.get('/discord/stop', discordService.stopBot);
 router.post('/discord/activity', authentication.checkAuth, discordService.updateActivity);
 
 module.exports = router;

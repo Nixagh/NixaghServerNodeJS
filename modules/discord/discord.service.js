@@ -7,10 +7,20 @@ const discord = Discord.getInstance();
 module.exports = {
     startBot: async (req, res) => {
         try {
-            const isStart = await discord.start();
+            const isRestart = req.query.restart;
+
+            const isStart = await discord.start(isRestart);
             const isLogin = discord.login(env.discord.token);
             return isStart && isLogin ? Response.createSuccessResponse(res, 'Bot started successfully')
                 : Response.createErrorResponse(res, 'Failed to start bot');
+        } catch (error) {
+            return Response.createErrorResponse(res, error.message);
+        }
+    },
+    stopBot: async (req, res) => {
+        try {
+            discord.stop();
+            return Response.createSuccessResponse(res, 'Bot stopped successfully');
         } catch (error) {
             return Response.createErrorResponse(res, error.message);
         }

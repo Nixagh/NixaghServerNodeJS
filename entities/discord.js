@@ -63,11 +63,19 @@ class Discord {
         }
 
         logger('Discord bot is running');
+        console.log('Discord bot is running')
 
         return this.#isRunning;
     }
 
+    stop() {
+        logger('Stopping Discord bot');
+        this.#isRunning = false;
+        this.#client.destroy();
+    }
+
     createNewActivity(activities) {
+        console.log(activities);
         const activity = new DiscordBot.RichPresence()
             .setType(activities.type)
             .setURL(activities.url)
