@@ -3,7 +3,6 @@ const app = express();
 const env = require('./commons/envStorage');
 
 // router
-const router = express.Router();
 const systemRouter = require('./modules/system/system.router');
 
 app.use(express.json());
