@@ -52,6 +52,9 @@ class ReadApp {
 
     async #luckyDraw() {
         const response = await RestAPI.post(this.luckyDrawUrl, {cookie: this.#cookie});
+
+        if("Bạn được Quay thêm 1 lần nữa" === response.message) await this.#luckyDraw();
+
         return response ? response : {message: 'Failed to lucky draw'};
     }
 }
