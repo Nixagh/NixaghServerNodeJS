@@ -46,14 +46,12 @@ class ReadApp {
     }
 
     async #attend() {
-        const response = await RestAPI.get(this.attendUrl, {cookie: this.#cookie});
-        console.log(response)
+        const response = await RestAPI.post(this.attendUrl, {cookie: this.#cookie});
         return response ? response : {message: 'Failed to attend'};
     }
 
     async #luckyDraw() {
-        const response = await RestAPI.get(this.luckyDrawUrl, {cookie: this.#cookie});
-        console.log(response)
+        const response = await RestAPI.post(this.luckyDrawUrl, {cookie: this.#cookie});
         if("Bạn được Quay thêm 1 lần nữa" === response.message) await this.#luckyDraw();
 
         return response ? response : {message: 'Failed to lucky draw'};

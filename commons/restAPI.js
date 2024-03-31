@@ -1,12 +1,5 @@
 const env = require('./envStorage');
-
-const html2json = (html) => {
-    // const message
-}
-
-const isJustAMoment = (text) => {
-    return text.includes('just a moment');
-}
+const Logger = require('./Logger');
 
 module.exports = {
     post: async (url, {cookie}) => {
@@ -15,42 +8,20 @@ module.exports = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Cookie': cookie
+                    'Cookie': cookie,
+                    'User-Agent': 'PostmanRuntime/7.37.0',
+                    'Accept': '*/*',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Connection': 'keep-alive',
+                    'Postman-Token': '0c3b1d3b-7f1d-4c6b-8d8b-3e9b3e6f5e7d',
                 }
             });
-
-            let body = await response.text();
-
-            if (isJustAMoment(body)) {
-                body = await response.text();
-            }
-            console.log(body)
-            body = body.replaceAll('{"d":null}', '');
-
-            return env.server.isDeployed ? body : JSON.parse(body);
-        } catch (error) {
-            console.error(error);
-            return null;
-        }
-    },
-    get: async (url, {cookie}) => {
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Cookie': cookie
-                }
-            });
-
+            // get domain from url
             let body = await response.text();
             body = body.replaceAll('{"d":null}', '');
-
-
-
-            return env.server.isDeployed ? body : JSON.parse(body);
+            return JSON.parse(body);
         } catch (error) {
-            console.error(error);
+            Logger.error(error);
             return null;
         }
     }
