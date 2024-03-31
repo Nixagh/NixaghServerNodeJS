@@ -1,5 +1,9 @@
 const env = require('./envStorage');
 
+const html2json = (html) => {
+    // const message
+}
+
 module.exports = {
     post: async (url, {cookie}) => {
         try {
@@ -14,7 +18,7 @@ module.exports = {
             let body = await response.text();
             body = body.replaceAll('{"d":null}', '');
 
-            return JSON.parse(body);
+            return env.server.isDeployed ? body : JSON.parse(body);
         } catch (error) {
             console.error(error);
             return null;
