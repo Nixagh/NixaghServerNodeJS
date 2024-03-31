@@ -4,6 +4,10 @@ const html2json = (html) => {
     // const message
 }
 
+const isJustAMoment = (text) => {
+    return text.includes('just a moment');
+}
+
 module.exports = {
     post: async (url, {cookie}) => {
         try {
@@ -16,6 +20,11 @@ module.exports = {
             });
 
             let body = await response.text();
+
+            if (isJustAMoment(body)) {
+                body = await response.text();
+            }
+            console.log(body)
             body = body.replaceAll('{"d":null}', '');
 
             return env.server.isDeployed ? body : JSON.parse(body);
@@ -36,6 +45,8 @@ module.exports = {
 
             let body = await response.text();
             body = body.replaceAll('{"d":null}', '');
+
+
 
             return env.server.isDeployed ? body : JSON.parse(body);
         } catch (error) {
